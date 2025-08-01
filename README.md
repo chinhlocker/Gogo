@@ -1,197 +1,197 @@
-# Gogo - Ride-Hailing Service Platform
+# Gogo - Nền Tảng Đặt Xe
 
-A simplified clone of Grab's ride-hailing system, built with Python Flask and MongoDB.
+Một phiên bản đơn giản hóa của hệ thống đặt xe Grab, được xây dựng bằng Python Flask và MongoDB.
 
-## Project Overview
+## Tổng Quan Dự Án
 
-Gogo is a web-based ride-hailing service that connects passengers with nearby drivers. The platform features real-time location tracking, intelligent driver matching, and a dual-interface system for both passengers and drivers.
+Gogo là một nền tảng đặt xe trực tuyến kết nối hành khách với tài xế ở gần. Hệ thống có các tính năng theo dõi vị trí thời gian thực, ghép đôi tài xế thông minh, và giao diện riêng biệt cho cả hành khách và tài xế.
 
-## Key Features
+## Tính Năng Chính
 
-### For Passengers
-- Interactive map-based ride booking
-- Real-time location selection (pickup and destination)
-- Weather information integration
-- User registration and authentication
-- Ride history tracking
-- Contact and feedback submission
+### Dành Cho Hành Khách
+- Đặt xe thông qua bản đồ tương tác
+- Chọn vị trí đón và điểm đến thời gian thực
+- Tích hợp thông tin thời tiết
+- Đăng ký và xác thực tài khoản
+- Theo dõi lịch sử chuyến đi
+- Gửi phản hồi và liên hệ
 
-### For Drivers
-- Toggle availability status
-- Real-time order notifications
-- Trip management interface
-- Automated distance-based matching
-- Driver registration and authentication
+### Dành Cho Tài Xế
+- Chuyển đổi trạng thái sẵn sàng
+- Nhận thông báo đơn hàng thời gian thực
+- Giao diện quản lý chuyến đi
+- Tự động ghép đơn dựa trên khoảng cách
+- Đăng ký và xác thực tài khoản tài xế
 
-### For Administrators
-- Dashboard for system monitoring
-- User and driver management
-- Trip analytics
-- Feedback management
+### Dành Cho Quản Trị Viên
+- Bảng điều khiển theo dõi hệ thống
+- Quản lý người dùng và tài xế
+- Phân tích chuyến đi
+- Quản lý phản hồi
 
-## Technical Stack
+## Công Nghệ Sử Dụng
 
-### Frontend
-- **HTML5/CSS3/JavaScript**
-- **Bootstrap 5.3** - UI Framework
-- **Font Awesome 6.4** - Icons
-- **Google Maps API** - Location Services
-- **TikTok Sans** - Primary Font
-- **XHR** - API Communication
-- **Component System** - Modular HTML structure
+### Frontend (Giao Diện)
+- **HTML5/CSS3/JavaScript** - Nền tảng web cơ bản
+- **Bootstrap 5.3** - Framework UI
+- **Font Awesome 6.4** - Thư viện biểu tượng
+- **Google Maps API** - Dịch vụ bản đồ
+- **TikTok Sans** - Font chữ chính
+- **XHR** - Giao tiếp API
+- **Component System** - Hệ thống component tái sử dụng
 
-### Backend
-- **Python Flask** - Server Framework
-- **MongoDB** - Database
-- **Google Maps API** - Distance Matrix
-- **Weather API** - Real-time Weather Data
+### Backend (Máy Chủ)
+- **Python Flask** - Framework máy chủ
+- **MongoDB** - Cơ sở dữ liệu
+- **Google Maps API** - Tính toán khoảng cách
+- **Weather API** - Dữ liệu thời tiết thời gian thực
 
-## Color Scheme
-- Primary Blue: `#093FB4`
-- Pure White: `#FFFCFB`
-- Light Pink: `#FFD8D8`
-- Accent Red: `#ED3500`
+## Bảng Màu
+- Xanh Chính: `#093FB4`
+- Trắng Tinh: `#FFFCFB`
+- Hồng Nhạt: `#FFD8D8`
+- Đỏ Nhấn: `#ED3500`
 
-## Project Structure
+## Cấu Trúc Dự Án
 ```
-├── main.py                 # Server initialization and API routes
-├── database.py            # MongoDB connection and database operations
+├── main.py                 # Khởi tạo máy chủ và định tuyến API
+├── database.py            # Kết nối MongoDB và thao tác dữ liệu
 ├── static/
-│   ├── components/        # Reusable HTML components
-│   │   ├── footer.html
-│   │   └── header.html
+│   ├── components/        # Components HTML có thể tái sử dụng
+│   │   ├── footer.html    # Chân trang
+│   │   └── header.html    # Đầu trang
 │   ├── css/
-│   │   └── variables.css  # CSS variables and theming
+│   │   └── variables.css  # Biến CSS và giao diện
 │   ├── js/
-│   │   └── component-loader.js  # Component integration system
-│   └── img/              # Image assets
+│   │   └── component-loader.js  # Hệ thống tải component
+│   └── img/              # Thư mục chứa hình ảnh
 ├── templates/
-│   ├── index.html        # Portal page
-│   ├── home.html         # Main user interface
-│   ├── driver.html       # Driver interface
-│   ├── about.html        # Company information
-│   ├── contact.html      # Contact form
-│   ├── dashboard.html    # Admin dashboard
+│   ├── index.html        # Trang chọn vai trò
+│   ├── home.html         # Giao diện chính người dùng
+│   ├── driver.html       # Giao diện tài xế
+│   ├── about.html        # Trang giới thiệu
+│   ├── contact.html      # Biểu mẫu liên hệ
+│   ├── dashboard.html    # Bảng điều khiển admin
 │   ├── auth/
-│   │   ├── user/        # User authentication pages
-│   │   └── driver/      # Driver authentication pages
-└── start.bat             # Server startup script
+│   │   ├── user/        # Trang xác thực người dùng
+│   │   └── driver/      # Trang xác thực tài xế
+└── start.bat             # Script khởi động máy chủ
 ```
 
-## API Endpoints (Planned)
+## Các Điểm Cuối API (Kế Hoạch)
 
-### User Endpoints
-- `POST /api/auth/user/register` - User registration
-- `POST /api/auth/user/login` - User login
-- `POST /api/rides/request` - Create ride request
-- `GET /api/rides/status/:id` - Check ride status
+### API Người Dùng
+- `POST /api/auth/user/register` - Đăng ký tài khoản người dùng
+- `POST /api/auth/user/login` - Đăng nhập người dùng
+- `POST /api/rides/request` - Tạo yêu cầu đặt xe
+- `GET /api/rides/status/:id` - Kiểm tra trạng thái chuyến đi
 
-### Driver Endpoints
-- `POST /api/auth/driver/register` - Driver registration
-- `POST /api/auth/driver/login` - Driver login
-- `PUT /api/driver/status` - Update availability status
-- `GET /api/driver/orders` - Get assigned orders
-- `PUT /api/rides/complete/:id` - Mark ride as complete
+### API Tài Xế
+- `POST /api/auth/driver/register` - Đăng ký tài khoản tài xế
+- `POST /api/auth/driver/login` - Đăng nhập tài xế
+- `PUT /api/driver/status` - Cập nhật trạng thái sẵn sàng
+- `GET /api/driver/orders` - Lấy danh sách đơn được giao
+- `PUT /api/rides/complete/:id` - Đánh dấu hoàn thành chuyến đi
 
-### Admin Endpoints
-- `GET /api/admin/dashboard` - Dashboard statistics
-- `GET /api/admin/users` - User management
-- `GET /api/admin/drivers` - Driver management
+### API Quản Trị
+- `GET /api/admin/dashboard` - Thống kê bảng điều khiển
+- `GET /api/admin/users` - Quản lý người dùng
+- `GET /api/admin/drivers` - Quản lý tài xế
 
-## Database Schema (Planned)
+## Cấu Trúc Cơ Sở Dữ Liệu (Kế Hoạch)
 
-### Users Collection
+### Bảng Người Dùng (Users)
 ```json
 {
     "id": "ObjectId",
-    "name": "String",
-    "phone": "String",
-    "email": "String",
-    "password": "String(hashed)",
-    "created_at": "DateTime"
+    "name": "String",          // Tên người dùng
+    "phone": "String",         // Số điện thoại
+    "email": "String",         // Email
+    "password": "String",      // Mật khẩu (đã mã hóa)
+    "created_at": "DateTime"   // Thời gian tạo tài khoản
 }
 ```
 
-### Drivers Collection
+### Bảng Tài Xế (Drivers)
 ```json
 {
     "id": "ObjectId",
-    "name": "String",
-    "phone": "String",
-    "email": "String",
-    "password": "String(hashed)",
+    "name": "String",          // Tên tài xế
+    "phone": "String",         // Số điện thoại
+    "email": "String",         // Email
+    "password": "String",      // Mật khẩu (đã mã hóa)
     "vehicle_info": {
-        "type": "String",
-        "plate": "String"
+        "type": "String",      // Loại xe
+        "plate": "String"      // Biển số xe
     },
-    "status": "String(available/busy)",
+    "status": "String",        // Trạng thái (sẵn sàng/bận)
     "current_location": {
-        "lat": "Number",
-        "lng": "Number"
+        "lat": "Number",       // Vĩ độ
+        "lng": "Number"        // Kinh độ
     },
-    "created_at": "DateTime"
+    "created_at": "DateTime"   // Thời gian tạo tài khoản
 }
 ```
 
-### Rides Collection
+### Bảng Chuyến Đi (Rides)
 ```json
 {
     "id": "ObjectId",
-    "user_id": "ObjectId",
-    "driver_id": "ObjectId",
+    "user_id": "ObjectId",     // ID người dùng
+    "driver_id": "ObjectId",   // ID tài xế
     "pickup": {
-        "lat": "Number",
-        "lng": "Number",
-        "address": "String"
+        "lat": "Number",       // Vĩ độ điểm đón
+        "lng": "Number",       // Kinh độ điểm đón
+        "address": "String"    // Địa chỉ điểm đón
     },
     "destination": {
-        "lat": "Number",
-        "lng": "Number",
-        "address": "String"
+        "lat": "Number",       // Vĩ độ điểm đến
+        "lng": "Number",       // Kinh độ điểm đến
+        "address": "String"    // Địa chỉ điểm đến
     },
-    "status": "String(pending/accepted/completed/cancelled)",
-    "created_at": "DateTime",
-    "completed_at": "DateTime"
+    "status": "String",        // Trạng thái (chờ/đã nhận/hoàn thành/hủy)
+    "created_at": "DateTime",  // Thời gian tạo chuyến
+    "completed_at": "DateTime" // Thời gian hoàn thành
 }
 ```
 
-## Setup Instructions (To be implemented)
+## Hướng Dẫn Cài Đặt (Sẽ được triển khai)
 
-1. Install Python dependencies
-2. Set up MongoDB local instance
-3. Configure environment variables
-4. Run the server using start.bat
+1. Cài đặt các thư viện Python cần thiết
+2. Thiết lập MongoDB cục bộ
+3. Cấu hình biến môi trường
+4. Chạy máy chủ bằng start.bat
 
-## Development Phases
+## Các Giai Đoạn Phát Triển
 
-### Phase 1 - Core Setup
-- Basic project structure
-- Database connection
-- Authentication system
-- Basic UI components
+### Giai Đoạn 1 - Thiết Lập Cơ Bản
+- Xây dựng cấu trúc dự án
+- Kết nối cơ sở dữ liệu
+- Hệ thống xác thực
+- Components giao diện cơ bản
 
-### Phase 2 - Ride Features
-- Map integration
-- Location selection
-- Driver matching algorithm
-- Real-time notifications
+### Giai Đoạn 2 - Tính Năng Đặt Xe
+- Tích hợp bản đồ
+- Chọn vị trí
+- Thuật toán ghép tài xế
+- Thông báo thời gian thực
 
-### Phase 3 - Enhanced Features
-- Weather integration
-- Trip history
-- Rating system
-- Analytics dashboard
+### Giai Đoạn 3 - Tính Năng Nâng Cao
+- Tích hợp thời tiết
+- Lịch sử chuyến đi
+- Hệ thống đánh giá
+- Bảng điều khiển phân tích
 
-### Phase 4 - Optimization
-- Performance improvements
-- UI/UX enhancements
-- Security hardening
-- Testing and debugging
+### Giai Đoạn 4 - Tối Ưu Hóa
+- Cải thiện hiệu suất
+- Nâng cao trải nghiệm người dùng
+- Tăng cường bảo mật
+- Kiểm thử và gỡ lỗi
 
-## Contributing
+## Đóng Góp
 
-This is a learning project. Contributions and suggestions are welcome.
+Đây là dự án học tập. Mọi đóng góp và góp ý đều được hoan nghênh.
 
-## License
+## Giấy Phép
 
-This project is for educational purposes only.
+Dự án này chỉ phục vụ mục đích giáo dục.
