@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gogo - Dịch vụ đặt xe trực tuyến</title>
+    
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Huninn" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6.4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <style>
+        body {
+            font-family: var(--font-family);
+            font-weight: var(--font-weight-normal);
+            padding-top: 76px; /* Header height */
+            background-color: var(--bg-primary);
+            color: var(--text-dark);
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .fa-3x {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .fa-3x {
+            transform: scale(1.1);
+        }
+
+        .card-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin: 1rem 0;
+            font-size: 1.25rem;
+        }
+
+        .card-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+            border-radius: 2px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+
+        /* Animation for cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .col-md-6:nth-child(2) .card {
+            animation-delay: 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <main class="container my-5 main-content">
+        <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+            <div class="col-md-8 text-center">
+                <h1 class="mb-4">Chọn vai trò của bạn</h1>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <a href="/home" class="card h-100 text-decoration-none">
+                            <div class="card-body">
+                                <i class="fas fa-user fa-3x mb-3 text-primary"></i>
+                                <h5 class="card-title">Hành khách</h5>
+                                <p class="card-text">Đặt xe và bắt đầu hành trình của bạn</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="/driver" class="card h-100 text-decoration-none">
+                            <div class="card-body">
+                                <i class="fas fa-car fa-3x mb-3 text-primary"></i>
+                                <h5 class="card-title">Tài xế</h5>
+                                <p class="card-text">Nhận chuyến và bắt đầu công việc</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Component Loader -->
+    <script src="/static/js/component-loader.js"></script>
+</body>
+</html>

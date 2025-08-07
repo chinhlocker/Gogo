@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gogo - Tài xế</title>
+    
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Huninn" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6.4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <style>
+        body {
+            font-family: var(--font-family);
+            font-weight: var(--font-weight-normal);
+            background-color: var(--bg-primary);
+            color: var(--text-dark);
+            padding-top: 76px;
+        }
+
+        .dashboard-container {
+            min-height: calc(100vh - 76px);
+            padding: 20px;
+        }
+
+        .status-panel {
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .order-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .order-card {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .order-time {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .location-detail {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .location-icon {
+            color: var(--primary-color);
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+
+        .location-text {
+            flex: 1;
+        }
+
+        .btn-accept {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-accept:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-badge.available {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .status-badge.busy {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .panel-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .panel-title i {
+            margin-right: 10px;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+            margin: 15px 0;
+            border-radius: 1px;
+        }
+
+        /* Map container for driver's current location */
+        .map-container {
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        /* Loading animation for order updates */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .updating {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header"></div>
+
+    <!-- Main Content -->
+    <main class="dashboard-container">
+        <div class="row">
+            <!-- Status Panel -->
+            <div class="col-md-4">
+                <div class="status-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-user-circle"></i>
+                        Trạng thái tài xế
+                    </h2>
+                    <div class="status-toggle">
+                        <span>Trạng thái làm việc</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="statusToggle" onchange="toggleStatus()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="text-center mb-3">
+                        <span class="status-badge available" id="statusBadge">Sẵn sàng</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="driver-stats">
+                        <p><i class="fas fa-route me-2"></i>Tổng chuyến hôm nay: <span id="totalTrips">5</span></p>
+                        <p><i class="fas fa-star me-2"></i>Đánh giá trung bình: <span id="rating">4.8</span></p>
+                    </div>
+                </div>
+
+                <!-- Current Location Map -->
+                <div class="status-panel">
+                    <h3 class="panel-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Vị trí hiện tại
+                    </h3>
+                    <div class="map-container" id="driverMap"></div>
+                </div>
+            </div>
+
+            <!-- Orders Panel -->
+            <div class="col-md-8">
+                <div class="status-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-list-alt"></i>
+                        Danh sách đơn
+                    </h2>
+                    <div class="order-list" id="orderList">
+                        <!-- Order cards will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Google Maps API -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
+    
+    <!-- Component Loader -->
+    <script src="/static/js/component-loader.js"></script>
+
+    <script>
+        let map;
+        let driverMarker;
+
+        function initMap() {
+            // Khởi tạo bản đồ với tọa độ mặc định
+            map = new google.maps.Map(document.getElementById('driverMap'), {
+                center: { lat: 21.0285, lng: 105.8542 },
+                zoom: 15
+            });
+
+            // Thêm marker cho vị trí tài xế
+            driverMarker = new google.maps.Marker({
+                position: { lat: 21.0285, lng: 105.8542 },
+                map: map,
+                title: 'Vị trí của bạn',
+                icon: {
+                    url: 'path_to_driver_icon.png',
+                    scaledSize: new google.maps.Size(40, 40)
+                }
+            });
+
+            // Cập nhật vị trí định kỳ
+            setInterval(updateLocation, 10000);
+        }
+
+        function toggleStatus() {
+            const toggle = document.getElementById('statusToggle');
+            const badge = document.getElementById('statusBadge');
+            
+            if (toggle.checked) {
+                badge.textContent = 'Sẵn sàng';
+                badge.classList.remove('busy');
+                badge.classList.add('available');
+                startOrderPolling();
+            } else {
+                badge.textContent = 'Đang bận';
+                badge.classList.remove('available');
+                badge.classList.add('busy');
+                stopOrderPolling();
+            }
+        }
+
+        function updateLocation() {
+            // Giả lập cập nhật vị trí
+            const newLat = 21.0285 + (Math.random() - 0.5) * 0.01;
+            const newLng = 105.8542 + (Math.random() - 0.5) * 0.01;
+            
+            driverMarker.setPosition({ lat: newLat, lng: newLng });
+            map.setCenter({ lat: newLat, lng: newLng });
+        }
+
+        function createOrderCard(order) {
+            return `
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-time">${order.time}</span>
+                        <span class="order-distance">${order.distance} km</span>
+                    </div>
+                    <div class="location-detail">
+                        <i class="fas fa-map-marker-alt location-icon"></i>
+                        <div class="location-text">
+                            <strong>Điểm đón:</strong><br>
+                            ${order.pickup}
+                        </div>
+                    </div>
+                    <div class="location-detail">
+                        <i class="fas fa-location-arrow location-icon"></i>
+                        <div class="location-text">
+                            <strong>Điểm đến:</strong><br>
+                            ${order.destination}
+                        </div>
+                    </div>
+                    <button class="btn btn-accept w-100 mt-2" onclick="acceptOrder('${order.id}')">
+                        <i class="fas fa-check me-2"></i>Nhận chuyến
+                    </button>
+                </div>
+            `;
+        }
+
+        let orderPolling;
+
+        function startOrderPolling() {
+            // Giả lập polling orders từ server mỗi 10 giây
+            orderPolling = setInterval(() => {
+                // API call để lấy đơn mới
+                const mockOrders = [
+                    {
+                        id: '1',
+                        time: '10:30',
+                        distance: '2.5',
+                        pickup: '235 Hoàng Quốc Việt, Cầu Giấy, Hà Nội',
+                        destination: '54 Lê Thanh Nghị, Hai Bà Trưng, Hà Nội'
+                    },
+                    // Thêm các đơn giả lập khác
+                ];
+
+                const orderList = document.getElementById('orderList');
+                orderList.innerHTML = mockOrders.map(order => createOrderCard(order)).join('');
+            }, 10000);
+        }
+
+        function stopOrderPolling() {
+            clearInterval(orderPolling);
+            document.getElementById('orderList').innerHTML = '';
+        }
+
+        function acceptOrder(orderId) {
+            // Xử lý nhận đơn
+            alert(`Đã nhận chuyến #${orderId}`);
+        }
+    </script>
+</body>
+</html>

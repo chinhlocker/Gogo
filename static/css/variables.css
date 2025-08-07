@@ -26,9 +26,8 @@
     --bg-primary: var(--secondary-color);
     --bg-secondary: #f8f9fa;
     --bg-accent: var(--accent-color);
-}
 
-/* TikTok Sans font family */
-body {
-    font-family: 'TikTok Sans', sans-serif;
+    /* Font variable */
+    --font-family: 'Huninn', sans-serif;
+    --font-weight-normal: 400;
 }

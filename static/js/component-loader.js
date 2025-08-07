@@ -1,30 +1,57 @@
 // Component loader
 function loadComponent(elementId, componentPath) {
+    const element = document.getElementById(elementId);
+    if (!element) {
+        console.warn(`Element with id '${elementId}' not found`);
+        return;
+    }
+
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `/static/components/${componentPath}`, true);
+    
     xhr.onload = function() {
         if (xhr.status === 200) {
-            document.getElementById(elementId).innerHTML = xhr.responseText;
+            element.innerHTML = xhr.responseText;
+            // Trigger để Bootstrap khởi tạo lại các components
+            const event = new Event('components-loaded');
+            document.dispatchEvent(event);
+        } else {
+            console.error(`Failed to load component '${componentPath}':`, xhr.status);
         }
     };
+
+    xhr.onerror = function() {
+        console.error(`Network error loading component '${componentPath}'`);
+    };
+
     xhr.send();
 }
 
-// Load header and footer components
+// Load components khi DOM đã sẵn sàng
 document.addEventListener('DOMContentLoaded', function() {
+    // Load components
     loadComponent('header-component', 'header.html');
     loadComponent('footer-component', 'footer.html');
+
+    // Khởi tạo loading modal sau khi DOM đã load
+    document.addEventListener('components-loaded', function() {
+        if (typeof bootstrap !== 'undefined') {
+            window.loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        }
+    });
 });
 
 // Loading modal functions
-const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
-
 function showLoading() {
-    loadingModal.show();
+    if (window.loadingModal) {
+        window.loadingModal.show();
+    }
 }
 
 function hideLoading() {
-    loadingModal.hide();
+    if (window.loadingModal) {
+        window.loadingModal.hide();
+    }
 }
 
 // XHR helper function
