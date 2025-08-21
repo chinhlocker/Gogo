@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gogo - Đặt xe</title>
-    
+
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Huninn" rel="stylesheet">
-    
+
     <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Font Awesome 6.4 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Leaflet Routing Machine CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/main.css">
     <style>
         body {
             font-family: var(--font-family);
             font-weight: var(--font-weight-normal);
             background-color: var(--bg-primary);
             color: var(--text-dark);
-            padding-top: 76px;
         }
 
         .map-container {
@@ -182,8 +183,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .panel-title {
@@ -215,12 +221,10 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <div id="header-component"></div>
-
-    <!-- Footer -->
-    <div id="footer-component"></div>
 
     <!-- Loading Modal -->
     <div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
@@ -274,236 +278,53 @@
         </div>
     </main>
 
+    <!-- Footer -->
+    <div id="footer-component"></div>
+
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
     </div>
 
     <!-- Bootstrap JS Bundle (includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+
     <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Leaflet Routing Machine JS -->
-    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-    <!-- OpenStreetMap Nominatim for geocoding -->
-    <script src="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <!-- Component Loader -->
     <script src="/static/js/component-loader.js"></script>
 
     <script>
-        let map;
-        let pickupMarker;
-        let destinationMarker;
-        let routingControl;
-
-        function initMap() {
-            // Khởi tạo bản đồ với OpenStreetMap
-            map = L.map('map').setView([20.8449, 106.6880], 13); // Tọa độ Hải Phòng
-
-            // Thêm layer OpenStreetMap
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors',
-                maxZoom: 19
-            }).addTo(map);
-
-            // Thêm control geocoding cho tìm kiếm địa điểm
-            const geocoder = L.Control.geocoder({
-                defaultMarkGeocode: false
-            })
-            .on('markgeocode', function(e) {
-                const bbox = e.geocode.bbox;
-                const poly = L.polygon([
-                    bbox.getSouthEast(),
-                    bbox.getNorthEast(),
-                    bbox.getNorthWest(),
-                    bbox.getSouthWest()
-                ]);
-                map.fitBounds(poly.getBounds());
-            })
-            .addTo(map);
-
-            // Thêm control tìm kiếm cho input điểm đón và điểm đến
-            setupLocationSearch('pickup');
-            setupLocationSearch('destination');
-
-            // Thêm định vị hiện tại
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const pos = [position.coords.latitude, position.coords.longitude];
-
-                        // Tạo marker cho vị trí hiện tại
-                        L.circleMarker(pos, {
-                            radius: 8,
-                            fillColor: '#4285F4',
-                            fillOpacity: 1,
-                            color: '#ffffff',
-                            weight: 2
-                        }).addTo(map);
-
-                        map.setView(pos, 15);
-                    },
-                    () => {
-                        console.log('Không thể lấy vị trí hiện tại');
-                    }
-                );
-            }
-
-            // Khởi tạo routing control
-            routingControl = L.Routing.control({
-                show: false,
-                addWaypoints: false,
-                draggableWaypoints: false,
-                lineOptions: {
-                    styles: [{color: '#4285F4', weight: 4}]
-                },
-                createMarker: function() { return null; } // Không tạo marker mặc định
-            }).addTo(map);
-        }
-
-        function setupLocationSearch(inputId) {
-            const input = document.getElementById(inputId);
-            
-            // Tạo geocoder cho input
-            const searchGeocoder = L.Control.Geocoder.nominatim({
-                geocodingQueryParams: {
-                    countrycodes: 'vn', // Giới hạn tìm kiếm trong Việt Nam
-                    limit: 5
-                }
-            });
-
-            // Xử lý sự kiện khi người dùng nhập
-            let searchTimeout;
-            input.addEventListener('input', function(e) {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    const query = e.target.value;
-                    if (query.length < 3) return;
-
-                    searchGeocoder.geocode(query, function(results) {
-                        if (results.length > 0) {
-                            const result = results[0];
-                            const latlng = result.center;
-
-                            // Xóa marker cũ nếu có
-                            const marker = inputId === 'pickup' ? pickupMarker : destinationMarker;
-                            if (marker) map.removeLayer(marker);
-
-                            // Tạo marker mới
-                            const newMarker = L.marker(latlng, {
-                                icon: L.divIcon({
-                                    html: `<i class="fas fa-${inputId === 'pickup' ? 'map-marker-alt' : 'location-arrow'}" style="color: #4285F4; font-size: 24px;"></i>`,
-                                    className: 'custom-div-icon',
-                                    iconSize: [30, 30],
-                                    iconAnchor: [15, 30]
-                                })
-                            }).addTo(map);
-
-                            // Lưu marker mới
-                            if (inputId === 'pickup') {
-                                pickupMarker = newMarker;
-                            } else {
-                                destinationMarker = newMarker;
-                            }
-
-                            // Di chuyển map đến vị trí được chọn
-                            map.setView(latlng, 15);
-
-                            // Nếu cả điểm đón và điểm đến đều có, vẽ đường đi
-                            if (pickupMarker && destinationMarker) {
-                                calculateAndDisplayRoute();
-                            }
-                        }
-                    });
-                }, 500);
-            });
-        }
-
-        function calculateAndDisplayRoute() {
-            if (!pickupMarker || !destinationMarker) return;
-
-            // Lấy tọa độ từ các marker
-            const from = pickupMarker.getLatLng();
-            const to = destinationMarker.getLatLng();
-
-            // Tính khoảng cách theo đường chim bay (m)
-            const distance = from.distanceTo(to);
-            // Ước tính thời gian (giả định tốc độ trung bình 30km/h)
-            const duration = (distance / 1000 / 30) * 3600; // seconds
-
-            // Cập nhật route trên bản đồ
-            if (routingControl) {
-                routingControl.setWaypoints([from, to]);
-
-                // Tạo div hiển thị thông tin chuyến đi nếu chưa có
-                let tripInfoDiv = document.getElementById('tripInfo');
-                if (!tripInfoDiv) {
-                    tripInfoDiv = document.createElement('div');
-                    tripInfoDiv.id = 'tripInfo';
-                    tripInfoDiv.className = 'mt-3 mb-3';
-                    document.querySelector('.booking-panel').insertBefore(
-                        tripInfoDiv,
-                        document.querySelector('.divider')
-                    );
-                }
-
-                // Hiển thị thông tin
-                tripInfoDiv.innerHTML = `
-                    <div class="trip-detail d-flex align-items-center mb-2">
-                        <i class="fas fa-road me-2" style="color: var(--primary-color)"></i>
-                        <span>Khoảng cách: ${(distance / 1000).toFixed(1)} km</span>
-                    </div>
-                    <div class="trip-detail d-flex align-items-center">
-                        <i class="fas fa-clock me-2" style="color: var(--primary-color)"></i>
-                        <span>Thời gian ước tính: ${Math.round(duration / 60)} phút</span>
-                    </div>
-                `;
-
-                // Hiển thị nút đặt xe
-                document.querySelector('.btn-book').style.display = 'block';
-            }
-        }
-
-        function bookRide() {
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            loadingOverlay.style.display = 'flex';
-
-            // Giả lập API call
-            setTimeout(() => {
-                loadingOverlay.style.display = 'none';
-                alert('Đã gửi yêu cầu đặt xe thành công!');
-            }, 2000);
-        }
-
         // Cập nhật thời tiết sử dụng XHR
         function updateWeather() {
             const weatherApiKey = '3c98b00882fe45e1b2775859250708';
             const location = 'hai phong';
             const xhr = new XMLHttpRequest();
-            
-            xhr.onreadystatechange = function() {
+
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         const data = JSON.parse(xhr.responseText);
-                        
+
                         // Cập nhật nhiệt độ
                         document.getElementById('temperature').textContent = `${data.current.temp_c}°C`;
-                        
+
                         // Cập nhật mô tả thời tiết
                         document.getElementById('weatherDesc').textContent = data.current.condition.text;
-                        
+
                         // Cập nhật độ ẩm
                         document.getElementById('humidity').textContent = `${data.current.humidity}%`;
-                        
+
                         // Cập nhật thời gian địa phương
                         const localTime = new Date(data.location.localtime);
                         document.getElementById('localTime').textContent = localTime.toLocaleTimeString('vi-VN', {
                             hour: '2-digit',
                             minute: '2-digit'
                         });
-                        
+
                         // Cập nhật icon thời tiết
                         const weatherCode = data.current.condition.code;
                         const weatherIcon = document.getElementById('weatherIcon');
@@ -514,7 +335,7 @@
                 }
             };
 
-            xhr.onerror = function() {
+            xhr.onerror = function () {
                 console.error('Lỗi kết nối khi lấy dữ liệu thời tiết');
             };
 
@@ -536,7 +357,7 @@
                 1087: 'fas fa-bolt', // Thunder
                 // Thêm các mã khác nếu cần
             };
-            
+
             return iconMap[code] || 'fas fa-cloud'; // Mặc định là icon mây
         }
 
@@ -547,4 +368,5 @@
         });
     </script>
 </body>
+
 </html>
