@@ -195,3 +195,7 @@ Gogo là một nền tảng đặt xe trực tuyến kết nối hành khách v�
 ## Giấy Phép
 
 Dự án này chỉ phục vụ mục đích giáo dục.
+
+## Ghi nhận các lỗi hiện tại
+- Cần loại bỏ phần điền họ tên và sđt, sẽ thay đổi bằng cơ chế đăng nhập, đăng kí
+- Thêm nút đặt xe

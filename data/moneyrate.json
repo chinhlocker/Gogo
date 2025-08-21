@@ -1,0 +1,6 @@
+{
+    "normal-hour-rate" : 1,
+    "overtime-hour-rate" : 1.5,
+    "night-hour-rate" : 1.25,
+    "cost-per-km-vnd" : 15000
+}

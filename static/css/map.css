@@ -1,0 +1,87 @@
+.custom-marker {
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    line-height: 32px;
+    font-size: 16px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 2px solid #093FB4;
+    color: #093FB4;
+}
+
+.pickup-marker {
+    background-color: #093FB4;
+    color: white;
+}
+
+.destination-marker {
+    background-color: white;
+    color: #093FB4;
+}
+
+/* Tùy chỉnh style cho route line */
+.leaflet-routing-line {
+    stroke-width: 4;
+    stroke: #093FB4;
+    stroke-opacity: 0.8;
+}
+
+/* Style cho các nút điều khiển trên bản đồ */
+.leaflet-control-container .leaflet-routing-container-hide {
+    display: none;
+}
+
+.leaflet-popup-content {
+    font-family: var(--font-family);
+    padding: 10px;
+}
+
+/* Tùy chỉnh marker đang được kéo */
+.leaflet-marker-draggable {
+    cursor: move;
+    opacity: 0.8;
+}
+
+/* Animation cho marker khi được thêm vào */
+@keyframes markerDrop {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    60% {
+        transform: translateY(25px);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.marker-animation {
+    animation: markerDrop 0.5s ease-out;
+}
+
+/* Style cho input đang active */
+.location-input input.active-input {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(9, 63, 180, 0.25);
+    background-color: rgba(9, 63, 180, 0.05);
+}
+
+/* Style cho loading modal */
+#loadingModal {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* Style cho đường đi */
+.leaflet-routing-container {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-height: 300px;
+    overflow-y: auto;
+}

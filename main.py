@@ -1,6 +1,7 @@
 import webbrowser
 import threading
 import os
+import json
 from flask import Flask, render_template, request, jsonify
 from database import *
 
@@ -37,6 +38,22 @@ def about():
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
+
+# API endpoint để lấy dữ liệu từ moneyrate.json
+@app.route("/api/moneyrates")
+def get_money_rates():
+    try:
+        with open('data/moneyrate.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            return jsonify(data)
+    except Exception as e:
+        return jsonify({
+            "error": str(e),
+            "normal-hour-rate": 1,
+            "overtime-hour-rate": 1.5,
+            "night-hour-rate": 1.25,
+            "cost-per-km-vnd": 15000
+        }), 500
 
 # API endpoint cho đăng ký người dùng
 @app.route("/api/auth/user/register", methods=["POST"])
