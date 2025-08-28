@@ -194,6 +194,10 @@ function showTripDetails(distance, time) {
     // Chèn trước nút đặt xe
     const bookButton = bookingPanel.querySelector('.btn-book');
     bookingPanel.insertBefore(tripDetails, bookButton);
+
+    // Hiển thị nút đặt xe và thông báo đăng nhập
+    bookButton.style.display = 'block';
+    showLoginPrompt();
 }
 
 // 7. Tính giá tiền
@@ -351,5 +355,35 @@ async function reverseGeocode(latlng, callback) {
         }
     } catch (error) {
         console.error('Lỗi khi lấy địa chỉ:', error);
+    }
+}
+
+// 11. Xử lý đặt xe
+function bookRide() {
+    // Lưu thông tin chuyến đi vào localStorage để sử dụng sau khi đăng nhập
+    const tripInfo = {
+        pickup: {
+            coords: pickupCoords,
+            address: document.getElementById('pickup').value
+        },
+        destination: {
+            coords: destinationCoords,
+            address: document.getElementById('destination').value
+        },
+        estimatedTime: document.querySelector('.trip-detail:nth-child(2)').textContent,
+        price: document.querySelector('.price-total').textContent
+    };
+    
+    localStorage.setItem('pendingTrip', JSON.stringify(tripInfo));
+    
+    // Chuyển hướng đến trang đăng nhập
+    window.location.href = '/login';
+}
+
+// Hiển thị thông báo đăng nhập sau khi có tuyến đường
+function showLoginPrompt() {
+    const loginPrompt = document.getElementById('loginPrompt');
+    if (loginPrompt) {
+        loginPrompt.style.display = 'block';
     }
 }

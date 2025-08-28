@@ -9,10 +9,18 @@ Gogo là một nền tảng đặt xe trực tuyến kết nối hành khách v�
 ## Tính Năng Chính
 
 ### Dành Cho Hành Khách
-- Đặt xe thông qua bản đồ tương tác
-- Chọn vị trí đón và điểm đến thời gian thực
-- Tích hợp thông tin thời tiết
-- Đăng ký và xác thực tài khoản
+- Đặt xe thông qua bản đồ tương tác:
+  - Chọn điểm đón và điểm đến trực tiếp trên bản đồ
+  - Hiển thị tuyến đường và ước tính thời gian
+  - Tính giá cước tự động theo khoảng cách và thời điểm
+  - Phụ thu giờ cao điểm và giờ đêm
+- Tích hợp widget thời tiết thời gian thực:
+  - Hiển thị nhiệt độ, độ ẩm
+  - Cập nhật tự động mỗi 5 phút
+  - Icon thời tiết trực quan
+- Đăng ký và xác thực tài khoản:
+  - Lưu thông tin chuyến đi trước khi đăng nhập
+  - Chuyển tiếp sau khi xác thực
 - Theo dõi lịch sử chuyến đi
 - Gửi phản hồi và liên hệ
 
@@ -35,10 +43,13 @@ Gogo là một nền tảng đặt xe trực tuyến kết nối hành khách v�
 - **HTML5/CSS3/JavaScript** - Nền tảng web cơ bản
 - **Bootstrap 5.3** - Framework UI
 - **Font Awesome 6.4** - Thư viện biểu tượng
-- **Google Maps API** - Dịch vụ bản đồ
-- **TikTok Sans** - Font chữ chính
-- **XHR** - Giao tiếp API
+- **Leaflet & Routing Machine** - Thư viện bản đồ và tìm đường
+- **Weather API** - API thời tiết
 - **Component System** - Hệ thống component tái sử dụng
+- **Module System** - Kiến trúc module hóa:
+  - **weather.js** - Xử lý widget thời tiết
+  - **map.js** - Xử lý bản đồ và đặt xe
+  - **component-loader.js** - Tải các component
 
 ### Backend (Máy Chủ)
 - **Python Flask** - Framework máy chủ
@@ -63,7 +74,11 @@ Gogo là một nền tảng đặt xe trực tuyến kết nối hành khách v�
 │   ├── css/
 │   │   └── variables.css  # Biến CSS và giao diện
 │   ├── js/
-│   │   └── component-loader.js  # Hệ thống tải component
+│   │   ├── component-loader.js  # Hệ thống tải component
+│   │   ├── weather.js          # Module xử lý widget thời tiết
+│   │   └── map.js             # Module xử lý bản đồ và đặt xe
+│   ├── data/
+│   │   └── moneyrate.json     # Cấu hình tính giá cước
 │   └── img/              # Thư mục chứa hình ảnh
 ├── templates/
 │   ├── index.html        # Trang chọn vai trò
@@ -85,6 +100,7 @@ Gogo là một nền tảng đặt xe trực tuyến kết nối hành khách v�
 - `POST /api/auth/user/login` - Đăng nhập người dùng
 - `POST /api/rides/request` - Tạo yêu cầu đặt xe
 - `GET /api/rides/status/:id` - Kiểm tra trạng thái chuyến đi
+- `GET /api/moneyrates` - Lấy biểu phí tính giá cước
 
 ### API Tài Xế
 - `POST /api/auth/driver/register` - Đăng ký tài khoản tài xế

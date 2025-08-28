@@ -259,13 +259,12 @@
                     <input type="text" class="form-control" id="destination" placeholder="Điểm đến">
                 </div>
                 <div class="divider"></div>
-                <div class="user-info">
-                    <input type="text" class="form-control" id="name" placeholder="Họ tên">
-                    <input type="tel" class="form-control" id="phone" placeholder="Số điện thoại">
-                </div>
-                <button class="btn btn-book" onclick="bookRide()" style="display: none;">
-                    <i class="fas fa-taxi me-2"></i>Đặt xe
+                <button class="btn btn-book mb-3" onclick="bookRide()" style="display: none;">
+                    <i class="fas fa-taxi me-2"></i>Tiếp tục đặt xe
                 </button>
+                <div class="text-center text-muted small" id="loginPrompt" style="display: none;">
+                    Vui lòng <a href="/login" class="text-primary">đăng nhập</a> để tiếp tục đặt xe
+                </div>
             </div>
 
             <!-- Weather Widget -->
@@ -299,77 +298,8 @@
 
     <!-- Component Loader -->
     <script src="/static/js/component-loader.js"></script>
-
-    <script>
-        // Cập nhật thời tiết sử dụng XHR
-        function updateWeather() {
-            const weatherApiKey = '3c98b00882fe45e1b2775859250708';
-            const location = 'hai phong';
-            const xhr = new XMLHttpRequest();
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        const data = JSON.parse(xhr.responseText);
-
-                        // Cập nhật nhiệt độ
-                        document.getElementById('temperature').textContent = `${data.current.temp_c}°C`;
-
-                        // Cập nhật mô tả thời tiết
-                        document.getElementById('weatherDesc').textContent = data.current.condition.text;
-
-                        // Cập nhật độ ẩm
-                        document.getElementById('humidity').textContent = `${data.current.humidity}%`;
-
-                        // Cập nhật thời gian địa phương
-                        const localTime = new Date(data.location.localtime);
-                        document.getElementById('localTime').textContent = localTime.toLocaleTimeString('vi-VN', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
-
-                        // Cập nhật icon thời tiết
-                        const weatherCode = data.current.condition.code;
-                        const weatherIcon = document.getElementById('weatherIcon');
-                        weatherIcon.className = 'weather-icon ' + getWeatherIcon(weatherCode);
-                    } else {
-                        console.error('Lỗi khi lấy dữ liệu thời tiết:', xhr.status);
-                    }
-                }
-            };
-
-            xhr.onerror = function () {
-                console.error('Lỗi kết nối khi lấy dữ liệu thời tiết');
-            };
-
-            xhr.open('GET', `https://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=${location}&aqi=no`, true);
-            xhr.send();
-        }
-
-        // Hàm chuyển đổi mã thời tiết sang icon Font Awesome tương ứng
-        function getWeatherIcon(code) {
-            // Mapping mã thời tiết sang icon Font Awesome
-            const iconMap = {
-                1000: 'fas fa-sun', // Clear
-                1003: 'fas fa-cloud-sun', // Partly cloudy
-                1006: 'fas fa-cloud', // Cloudy
-                1009: 'fas fa-cloud', // Overcast
-                1030: 'fas fa-smog', // Mist
-                1063: 'fas fa-cloud-rain', // Rain
-                1066: 'fas fa-snowflake', // Snow
-                1087: 'fas fa-bolt', // Thunder
-                // Thêm các mã khác nếu cần
-            };
-
-            return iconMap[code] || 'fas fa-cloud'; // Mặc định là icon mây
-        }
-
-        // Cập nhật thời tiết khi trang load và mỗi 5 phút
-        document.addEventListener('DOMContentLoaded', () => {
-            updateWeather();
-            setInterval(updateWeather, 5 * 60 * 1000);
-        });
-    </script>
+    <!-- Custom JS -->
+    <script src="/static/js/weather.js"></script>
     <script src="/static/js/map.js"></script>
 </body>
 </html>
