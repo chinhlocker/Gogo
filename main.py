@@ -39,6 +39,16 @@ def about():
 def contact():
     return render_template("contact.html")
 
+# Route cho trang đăng nhập
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+# Route cho trang đăng ký
+@app.route("/signup")
+def signup():
+    return render_template("signup.html")
+
 # API endpoint để lấy dữ liệu từ moneyrate.json
 @app.route("/api/moneyrates")
 def get_money_rates():

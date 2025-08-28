@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gogo - Đăng nhập</title>
+    
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Huninn" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6.4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <style>
+        body {
+            font-family: var(--font-family);
+            font-weight: var(--font-weight-normal);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/static/img/bglogin.jpg') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 0.7rem 1rem;
+            height: 45px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(9, 63, 180, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .input-group-text {
+            background: transparent;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-muted);
+            height: 45px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .btn-login {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 1rem;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .social-login {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .btn-social {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-facebook {
+            background: #1877F2;
+            color: white;
+        }
+
+        .btn-google {
+            background: #DB4437;
+            color: white;
+        }
+
+        .btn-social i {
+            margin-right: 10px;
+        }
+
+        .btn-social:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+            color: white;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: calc(45% - 15px);
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 6px 1rem;
+            color: var(--text-muted);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="/static/img/logo.png" alt="Gogo Logo">
+        </div>
+        
+        <div class="login-form">
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="fas fa-user"></i>
+                </span>
+                <input type="text" class="form-control" id="username" placeholder="Tên đăng nhập">
+            </div>
+            
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="fas fa-lock"></i>
+                </span>
+                <input type="password" class="form-control" id="password" placeholder="Mật khẩu">
+            </div>
+
+            <div class="alert alert-danger d-none" id="loginError" role="alert"></div>
+            
+            <button type="button" class="btn btn-login" id="loginBtn" onclick="handleLogin()">Đăng nhập</button>
+            
+            <div class="footer-links">
+                <a href="#">Quên mật khẩu?</a>
+                <a href="signup">Đăng ký</a>
+            </div>
+            
+            <div class="divider">
+                <span>hoặc</span>
+            </div>
+            
+            <div class="social-login">
+                <a href="#" class="btn btn-social btn-facebook" onclick="handleSocialLogin('facebook')">
+                    <i class="fab fa-facebook-f"></i>
+                    Facebook
+                </a>
+                <a href="#" class="btn btn-social btn-google" onclick="handleSocialLogin('google')">
+                    <i class="fab fa-google"></i>
+                    Google
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            // Disable button and show loading state
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang đăng nhập...';
+            loginError.classList.add('d-none');
+
+            // Create XHR request
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/login', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            // Successful login
+                            window.location.href = response.redirect || '/';
+                        } else {
+                            // Show error message
+                            showError(response.message || 'Đăng nhập thất bại');
+                        }
+                    } catch (e) {
+                        showError('Có lỗi xảy ra, vui lòng thử lại');
+                    }
+                } else {
+                    showError('Có lỗi xảy ra, vui lòng thử lại');
+                }
+                // Reset button state
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Đăng nhập';
+            };
+
+            xhr.onerror = function() {
+                showError('Không thể kết nối đến máy chủ');
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Đăng nhập';
+            };
+
+            // Send request
+            xhr.send(JSON.stringify({
+                username: username,
+                password: password
+            }));
+        }
+
+        function showError(message) {
+            const loginError = document.getElementById('loginError');
+            loginError.textContent = message;
+            loginError.classList.remove('d-none');
+        }
+
+        function handleSocialLogin(provider) {
+            // Implement social login logic here
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', `/api/auth/${provider}`, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.authUrl) {
+                            window.location.href = response.authUrl;
+                        } else {
+                            showError('Không thể kết nối với ' + provider);
+                        }
+                    } catch (e) {
+                        showError('Có lỗi xảy ra, vui lòng thử lại');
+                    }
+                } else {
+                    showError('Có lỗi xảy ra, vui lòng thử lại');
+                }
+            };
+
+            xhr.onerror = function() {
+                showError('Không thể kết nối đến máy chủ');
+            };
+
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gogo - Đăng ký</title>
+    
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Huninn" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6.4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <style>
+        body {
+            font-family: var(--font-family);
+            font-weight: var(--font-weight-normal);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/static/img/bglogin.jpg') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .signup-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+            margin: 2rem 0;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 0.7rem 1rem;
+            height: 45px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(9, 63, 180, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .input-group-text {
+            background: transparent;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-muted);
+            height: 45px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .gender-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .gender-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .gender-option input[type="radio"] {
+            display: none;
+        }
+
+        .gender-option label {
+            display: block;
+            padding: 0.7rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gender-option input[type="radio"]:checked + label {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .btn-signup {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 1rem;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-signup:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .terms-check {
+            margin: 1rem 0;
+        }
+
+        .terms-check a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .terms-check a:hover {
+            text-decoration: underline;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="logo">
+            <img src="/static/img/logo.png" alt="Gogo Logo">
+        </div>
+        
+        <div class="signup-form">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-user"></i>
+                </span>
+                <input type="text" class="form-control" id="username" placeholder="Tên tài khoản">
+            </div>
+            
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-lock"></i>
+                </span>
+                <input type="password" class="form-control" id="password" placeholder="Mật khẩu">
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-lock"></i>
+                </span>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Nhập lại mật khẩu">
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-phone"></i>
+                </span>
+                <input type="tel" class="form-control" id="phone" placeholder="Số điện thoại">
+            </div>
+
+            <div class="gender-group">
+                <div class="gender-option">
+                    <input type="radio" name="gender" id="male" value="male">
+                    <label for="male">Nam</label>
+                </div>
+                <div class="gender-option">
+                    <input type="radio" name="gender" id="female" value="female">
+                    <label for="female">Nữ</label>
+                </div>
+                <div class="gender-option">
+                    <input type="radio" name="gender" id="other" value="other">
+                    <label for="other">Khác</label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-calendar"></i>
+                </span>
+                <input type="date" class="form-control" id="birthDate">
+            </div>
+
+            <div class="alert alert-danger d-none" id="signupError" role="alert"></div>
+
+            <div class="terms-check">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="termsCheck">
+                    <label class="form-check-label" for="termsCheck">
+                        Tôi đồng ý với <a href="#" target="_blank">điều khoản sử dụng</a> và <a href="#" target="_blank">chính sách bảo mật</a>
+                    </label>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-signup" id="signupBtn" onclick="handleSignup()">
+                Đăng ký
+            </button>
+
+            <div class="login-link">
+                Đã có tài khoản? <a href="/login">Đăng nhập ngay</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function handleSignup() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phone = document.getElementById('phone').value;
+            const gender = document.querySelector('input[name="gender"]:checked')?.value;
+            const birthDate = document.getElementById('birthDate').value;
+            const termsAccepted = document.getElementById('termsCheck').checked;
+
+            // Validate inputs
+            if (!username || !password || !confirmPassword || !phone || !gender || !birthDate) {
+                showError('Vui lòng điền đầy đủ thông tin');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Mật khẩu nhập lại không khớp');
+                return;
+            }
+
+            if (!termsAccepted) {
+                showError('Vui lòng đồng ý với điều khoản sử dụng');
+                return;
+            }
+
+            const signupBtn = document.getElementById('signupBtn');
+            signupBtn.disabled = true;
+            signupBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang đăng ký...';
+
+            // Create XHR request
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/signup', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            // Successful signup
+                            window.location.href = response.redirect || '/login';
+                        } else {
+                            showError(response.message || 'Đăng ký thất bại');
+                        }
+                    } catch (e) {
+                        showError('Có lỗi xảy ra, vui lòng thử lại');
+                    }
+                } else {
+                    showError('Có lỗi xảy ra, vui lòng thử lại');
+                }
+                signupBtn.disabled = false;
+                signupBtn.innerHTML = 'Đăng ký';
+            };
+
+            xhr.onerror = function() {
+                showError('Không thể kết nối đến máy chủ');
+                signupBtn.disabled = false;
+                signupBtn.innerHTML = 'Đăng ký';
+            };
+
+            // Send request
+            xhr.send(JSON.stringify({
+                username,
+                password,
+                phone,
+                gender,
+                birthDate,
+                termsAccepted
+            }));
+        }
+
+        function showError(message) {
+            const signupError = document.getElementById('signupError');
+            signupError.textContent = message;
+            signupError.classList.remove('d-none');
+        }
+    </script>
+</body>
+</html>
